@@ -20,13 +20,18 @@ def create_rag_chain(vector_store):
     )
     
     # Modified prompt template to handle cases with no relevant information
-    template = """Answer the question based on the context.
+    template = """Answer the question based only on the following context:
+
     Context: {context}
 
     Question: {question}
 
-    Note: If the context doesn't contain relevant information to answer the question, respond with "NO RELEVANT INFORMATION FOUND IN THE URLS".
-    """
+    Instructions:
+    1. If the context doesn't contain information that helps answer the question, respond EXACTLY with "NO RELEVANT INFORMATION FOUND IN THE URLS".
+    2. Don't attempt to answer if the necessary information isn't in the context.
+    3. Only use information from the provided context.
+
+    Your response:"""
 
     custom_rag_prompt = PromptTemplate.from_template(template)
 
